@@ -1,9 +1,12 @@
 import express from "express";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-app.use(express.json);
+app.use(express.json());
 
 const posts = [
   {
@@ -38,20 +41,24 @@ const posts = [
 ];
 
 app.listen(PORT, () => {
-  console.log("Server escutando");
+  console.log(`Server escutando na porta ${PORT}`);
 });
 
 app.get("/posts", (Req, Res) => {
   Res.status(200).send(posts);
 });
 
-function buscarPostID(id){
-    return posts.findIndex((post) => {
-        return post.id === Number(id)
-    });
+function buscarPostID(id) {
+  return posts.findIndex((post) => {
+    return post.id === Number(id);
+  });
 }
+
 
 app.get("/posts/:id", (Req, Res) => {
   const index = buscarPostID(Req.params.id);
-  Res.status(200).json(posts[index]);
+  if (index === -1) {
+    return Res.status(404).json({ error: "Post não encontrado" });
+  }
+  return Res.status(200).json(posts[index]);
 });
