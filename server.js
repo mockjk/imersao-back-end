@@ -1,4 +1,3 @@
-
 import express from "express";
 import postsRoutes from "./src/routes/postsRoutes.js";
 
@@ -9,5 +8,3 @@ postsRoutes(app);
 app.listen(PORT, () => {
   console.log(`Server escutando na porta ${PORT}`);
 });
-
-
